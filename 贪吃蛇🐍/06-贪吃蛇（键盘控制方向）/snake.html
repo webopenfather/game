@@ -1,0 +1,17 @@
+<div class="map"></div>
+
+<button class="start">开始</button>
+<button class="stop">停止</button>
+<script src="./snake.js"></script>
+<script src="./food.js"></script>
+<script src="./map.js"></script>
+<script src="./game.js"></script>
+
+<script>
+const g = new Game('.map')
+
+const start = document.querySelector('.start')
+// const stop = document.querySelector('.stop')
+start.addEventListener('click', () => g.start())
+// stop.addEventListener('click', () => g.stop())
+</script>
