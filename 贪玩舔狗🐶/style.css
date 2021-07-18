@@ -1,0 +1,25 @@
+*{padding:0px;margin:0px;}
+.play-panel {display:none; width: 250px;height: 180px;border: solid 2px black;position: fixed;left: 50%;top: 50%;transform: translate(-50%, -50%);text-align: center}
+.play-panel .start {display:none;}
+.play-panel .start .btn {border:solid 2px black; display: inline-block; padding: 10px;font-weight: 700;margin-top:65px;}
+.play-panel .start .btn:hover {cursor: pointer; color: yellow; background-color: #000;}
+.play-panel .stop {display:none;}
+.play-panel .title,.score {font-weight: 700;font-size: 26px;margin:15px 0px;}
+.play-panel .stop .btn {border:solid 2px black; display: inline-block; padding: 10px;font-weight: 700;}
+.play-panel .stop .btn:hover {cursor: pointer; color: yellow; background-color: #000;}
+
+.game-score {position: fixed;top:0px;width:100%;}
+.game-score h1:nth-of-type(1) {float: left;}
+.game-score h1:nth-of-type(2) {float: right;}
+
+.wsc {width: 70px;height: 70px;position: fixed;bottom:0px;left: 500px;}
+.hotdog {width: 20px;height: 50px;position: fixed;top:0px;left: 500px;}
+.guanjun {width: 40px;height: 70px;position: fixed;top:0px;left: 560px;}
+.show-score {position: fixed; z-index: 2; width: auto; height: 20px; text-align: center; left: 546px; bottom: 70px; font-weight: 700; font-size: 18px; animation:scale 1s ease;}
+
+@keyframes scale
+{
+    0%   {transform: scale(0.8)}
+    50%  {transform: scale(1.5)}
+    100% {transform: scale(1)}
+}

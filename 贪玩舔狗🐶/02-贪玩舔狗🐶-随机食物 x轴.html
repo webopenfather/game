@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>贪玩舔狗🐶</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <img class="wsc" src="./img/wsc.jpg" alt="王思聪">
+  <div class="show-score">+1</div>
+      
+  <div class="play-panel">
+    <div class="start"><span class="btn">❥开始游戏</span></div>
+    <div class="stop">
+      <div class="title">游戏结束</div>
+      <div class="score">60分</div>
+      <div class="btn">※重新开始※</div>
+    </div>
+  </div>
+  
+  <div class="game-score">
+    <h1>剩余时间<span>60</span>秒</h1>
+    <h1>+10分</h1>
+  </div>
+
+  <script>
+  function random(min, max) {
+    return Math.floor( Math.random() * (max-min+1)+min ) 
+  }
+
+
+  // ###随机食物 x轴
+  // 1 打开页面，执行定时器代码 1s
+  // 2 定时器处理函数中 
+  //   2.1 随机数0-9  
+  //   2.2 判断2.1随机数68创建冠军食物，01234579热狗食物
+  //   2.3 追加食物到页面
+
+  setInterval(() => {
+    // 初始化数据
+    let imgObj = document.createElement('img')
+
+    // 食物出现概率
+    let who = random(0,9) // 68-冠军,01234579-热狗
+    
+    // 判断出现食物
+    if ([6,8].includes(who))
+    {
+      // <img class="guanjun" src="./img/guanjun.jpg" />
+      imgObj.className = 'food guanjun'
+      imgObj.src = './img/guanjun.jpg'
+    } else {
+      // <img class="hotdog" src="./img/hotdog.jpg" />
+      imgObj.className = 'food hotdog'
+      imgObj.src = './img/hotdog.jpg'
+   }
+
+    // 追加食物到页面
+    let min = 0
+    let max = (window.innerWidth || document.documentElement.clientWidth) - imgObj.offsetWidth
+    imgObj.style.left = random(min, max) + 'px'
+    imgObj.style.top = '0px'
+    document.body.appendChild(imgObj)
+  }, 1000)
+  </script>
+</body>
+</html>

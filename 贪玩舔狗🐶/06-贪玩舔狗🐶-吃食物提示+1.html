@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>贪玩舔狗🐶</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <img class="wsc" src="./img/wsc.jpg" alt="王思聪">
+  
+  <div class="play-panel">
+    <div class="start"><span class="btn">❥开始游戏</span></div>
+    <div class="stop">
+      <div class="title">游戏结束</div>
+      <div class="score">60分</div>
+      <div class="btn">※重新开始※</div>
+    </div>
+  </div>
+  
+  <div class="game-score">
+    <h1>剩余时间<span>60</span>秒</h1>
+    <h1>+10分</h1>
+  </div>
+
+  <script>
+  function random(min, max) {
+    return Math.floor( Math.random() * (max-min+1)+min ) 
+  }
+
+  // ### 全局变量
+  let wscObj =  document.querySelector('.wsc')
+  let score = 0
+  let wscX = 0
+  let wscY = (window.innerHeight||document.documentElement.clientHeight) - wscObj.offsetHeight
+  
+
+  // ###随机食物 x轴
+  // 1 打开页面，执行定时器代码 1s
+  // 2 定时器处理函数中 
+  //   2.1 随机数0-9  
+  //   2.2 判断2.1随机数68创建冠军食物，01234579热狗食物
+  //   2.3 追加食物到页面
+
+  setInterval(() => {
+    // 初始化数据
+    let imgObj = document.createElement('img')
+
+    // 食物出现概率
+    let who = random(0,9) // 68-冠军,01234579-热狗
+    
+    // 判断出现食物
+    if ([6,8].includes(who))
+    {
+      // <img class="guanjun" src="./img/guanjun.jpg" />
+      imgObj.className = 'food guanjun'
+      imgObj.src = './img/guanjun.jpg'
+    } else {
+      // <img class="hotdog" src="./img/hotdog.jpg" />
+      imgObj.className = 'food hotdog'
+      imgObj.src = './img/hotdog.jpg'
+   }
+
+    // 追加食物到页面
+    let min = 0
+    let max = (window.innerWidth || document.documentElement.clientWidth) - imgObj.offsetWidth
+    imgObj.style.left = random(min, max) + 'px'
+    imgObj.style.top = '0px'
+    document.body.appendChild(imgObj)
+  }, 1000)
+
+
+  // ### 食物掉落 y轴
+  // 1 打开页面，执行定时器代码 50ms
+  // 2 定时器处理函数中 
+  //   2.1 获取所有食物
+  //   2.2 遍历
+  //   2.3 计算top数据：原top+ 2
+  //   2.4 判断位置  超出-网页移除，没超出-重置top
+
+  setInterval(() => {
+    // 获取所有食物
+    let foods = document.querySelectorAll('.food')
+    // 遍历
+    foods.forEach((item, index) => { // item就是一个个图片食物
+      // 计算top数据：原top+ 2
+      let top = parseInt(item.style.top) + 2
+      // 判断位置  超出-网页移除，没超出-重置top
+      let maxTop = (window.height || document.documentElement.clientHeight) - item.offsetHeight
+      if (top >= maxTop) {
+        document.body.removeChild(item)
+      } else {
+        item.style.top = top + 'px'
+      }
+
+      // 3. 食物掉落判断是否在王公子范围内
+      //    公式x：  食物x > 王公子x  && 食物x < 王公子x+自身宽度
+      //    公式y：  食物y+自身高度 > 王公子y
+      //    符 合：【公式x、公式y】则分数+1
+      let foodX = parseInt(item.style.left)
+      let foodY = parseInt(item.style.top) + item.offsetHeight
+      if ( 
+        (foodX>wscX && foodX<=(wscX+wscObj.offsetWidth))
+        &&
+        foodY>wscY
+      ) {
+        score++
+        console.log(`食物坐标【${foodX},${foodY}】，王公子坐标【${wscX+wscObj.offsetWidth},${wscY+wscObj.offsetHeight}】，+1，总分【${score}}】`);
+        document.querySelector('.game-score h1:nth-of-type(2)').innerText = `+${score}分`
+        document.body.removeChild(item) 
+        
+        // 提示 <div class="show-score">+1</div>
+        let divObj = document.createElement('div')
+        divObj.className = 'show-score'
+        divObj.innerText = '+1'
+        divObj.style.left = wscX+wscObj.offsetWidth + 'px'
+        // divObj.style.bottom = wscY+wscObj.offsetHeight + 'px'
+        document.body.appendChild(divObj)
+        setTimeout(() => document.body.removeChild(divObj), 1000)
+      }
+      
+    })
+  })
+
+  
+  // ### 安排王公子
+  // 1 打开网页，绑定鼠标移动事件
+  // 2 事件处理函数中
+  //   2.1 获取事件对象
+  //   2.2 限定left最大0 最大网页宽度-王公子宽度
+  //   2.3 同步left为鼠标位置
+  
+  document.onmousemove = function(evt) {
+    // 获取事件对象
+    let e = evt || window.event
+    // 限定left最大0 最大网页宽度-王公子宽度
+    let wscObj = document.querySelector('.wsc')
+    let left = e.clientX - wscObj.offsetWidth/2
+    let maxLeft = (window.innerWidth || document.documentElement.clientWidth) - wscObj.offsetWidth
+    if (left<0) left = 0
+    if (left>=maxLeft) left = maxLeft
+    // 同步left为鼠标位置
+    wscObj.style.left = left + 'px'
+
+    // 重置王公子坐标
+    wscX = left
+  }
+
+
+  // ### 吃食物
+  // 1. script开始标记位置定时全局变量 保存王公子坐标
+  // 2. 王公子移动 重置全局变量
+  // 3. 食物掉落判断是否在王公子范围内
+  //    公式x：  食物x > 王公子x  && 食物x <= 王公子x+自身宽度
+  //    公式y：  食物y+自身高度 > 王公子y  
+  //    符 合：【公式x、公式y】则分数+1
+  </script>
+</body>
+</html>
